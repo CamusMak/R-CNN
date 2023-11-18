@@ -1,1 +1,1 @@
-from . import *
+from dataset import CatDogDataset
