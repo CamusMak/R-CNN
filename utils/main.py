@@ -23,4 +23,7 @@ TEST_ROOT = '../DATA/test'
 
 model = faster_rccn()
 
-train_model(model=model)
+train_model(model=model,n_of_iterations=1)
+
+
+# ((None,3,250,250))

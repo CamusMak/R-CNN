@@ -6,6 +6,8 @@ import os
 import xml.etree.ElementTree as ET
 from PIL import Image
 
+# import cv2
+
 
 
 annotation_root = "../data/annotations"
@@ -24,16 +26,14 @@ def xml_to_dict(file):
 
     return {"file_name":root.find("./filename").text,
                 "label":root.find("./object/name").text,
-                "widht": root.find("./size/width").text,
-                "height" : root.find("./size/height").text,
+                "width": int(root.find("./size/width").text),
+                "heigth" : int(root.find("./size/height").text),
                 "depth" : root.find("./size/depth").text,
                 "xmin" : xmin,
                 "xmax" : xmax,
                 "ymin" : ymin,
                 "ymax" : ymax,
                 "target" : [xmin,xmax,ymin,ymax]}
-
-
 
 
 
@@ -57,11 +57,28 @@ class CatDogDataset(Dataset):
 
         ann = xml_to_dict(xml_file)
 
+        old_width = ann['width']
+        old_height = ann['heigth']
+        
+        WIDHT,HEIGHT = 250,250
+        
+        image = Image.open(self.root+"/images/"+image_file).convert("RGB").resize((WIDHT,HEIGHT))
+
+        x_ratio = WIDHT/old_width
+        y_ratio = HEIGHT/old_height
+
+
+        xmin = ann['xmin'] * x_ratio
+        ymin = ann["ymin"] * y_ratio
+        xmax = ann["xmax"] * x_ratio
+        ymax = ann["ymax"] * y_ratio
+
         target = {"boxes":torch.as_tensor([
-                  ann['xmin'],
-                  ann["ymin"],
-                  ann["xmax"],
-                  ann["ymax"]])}
+                    xmin,
+                    ymin,
+                    xmax,
+                    ymax
+                  ])}
         
         target['labels'] = torch.as_tensor([self.label_dict[ann['label']]])
         target['image_id'] = index
@@ -72,14 +89,15 @@ class CatDogDataset(Dataset):
         #           ann["xmax"],
         #           ann["ymax"]]]),torch.as_tensor([self.label_dict[ann['label']]])
         
-        image = Image.open(self.root+"/images/"+image_file).convert("RGB")
+
 
 
         transform = transforms.Compose([transforms.PILToTensor()])
         image_tensor = transform(image)
         
 
-        print(image_tensor.size())
+        image_tensor = image_tensor/255
+        # print(image_tensor.size())
         # quit()
 
         return image_tensor,target

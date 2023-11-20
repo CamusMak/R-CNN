@@ -1,5 +1,7 @@
 from torch.utils.data import DataLoader
 
+from icecream import ic
+
 import sys
 sys.path.append("../utils")
 
@@ -11,8 +13,6 @@ from icecream import ic
 TRAIN_ROOT = "../DATA/train"
 VALIDATION_ROOT = '../DATA/validation'
 TEST_ROOT = '../DATA/test'
-
-
 
 ## split files into several roots
 # split("../data/images",source_annoation_root='../data/annotations',train_root=TRAIN_ROOT,validation_root=VALIDATION_ROOT,test_root=TEST_ROOT)
@@ -29,8 +29,7 @@ test_set = CatDogDataset(root=TEST_ROOT)
 # why batch size > 1 does not work???
 
 train_dataloader = DataLoader(train_set,batch_size=1)
-# train_dataloader = DataLoader(train_set,batch_size=1)
-# train_dataloader = DataLoader(train_set,batch_size=1)
+
 
 
 def train_model(model,n_of_iterations=10):
@@ -40,8 +39,16 @@ def train_model(model,n_of_iterations=10):
         for X,Y in train_dataloader:
 
 
-            X = [X]
+            X = X
             Y = [Y]
+
+            # print(Y)
+            # break
+
+            # ic(X[0].shape)
+
+            # break
+
 
             print(X)
             print(Y)
