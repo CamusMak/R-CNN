@@ -1,3 +1,4 @@
+import torch
 from torch.utils.data import DataLoader
 
 from icecream import ic
@@ -5,74 +6,63 @@ from icecream import ic
 import sys
 sys.path.append("../utils")
 
-from dataset import CatDogDataset
-from model import faster_rccn
-from split_roots import split
-from icecream import ic
-
-TRAIN_ROOT = "../DATA/train"
-VALIDATION_ROOT = '../DATA/validation'
-TEST_ROOT = '../DATA/test'
-
-## split files into several roots
-# split("../data/images",source_annoation_root='../data/annotations',train_root=TRAIN_ROOT,validation_root=VALIDATION_ROOT,test_root=TEST_ROOT)
 
 
 
-# image_root = "../data/"
-
-train_set = CatDogDataset(root=TRAIN_ROOT)
-validataion_set = CatDogDataset(root=VALIDATION_ROOT)
-test_set = CatDogDataset(root=TEST_ROOT)
-
-
-# why batch size > 1 does not work???
-
-train_dataloader = DataLoader(train_set,batch_size=1)
 
 
 
-def train_model(model,n_of_iterations=10):
-
-    for _ in range(n_of_iterations):
-
-        for X,Y in train_dataloader:
+def train(model,batch,optimizer,device):
 
 
-            X = X
-            Y = [Y]
+    """
+    The function performs forward and backward steps for given batch
 
-            # print(X)
-            print(Y)
-
-            # print(Y[0]['boxes'].size())
+    ------------------------------------------------------
 
 
-            output = model(X,Y)
-            print(output)
-            break
-        break
-            # print(loss)
+    model:
+        model to train, in this case R-CNN
+
+    batch:
+        input data for current batch
+    
+    optimizer:
+        optimizer to use to update model parameters
+    
+    device:
+        cuda if available else cpu
+
+
+    --------------------------------------------------------
+
+    split batch into X and Y (image, label)
+
+    X is a list of images
+    Y is a list of boxes and labels for images
+
+
+    """
+
+
+    X,Y = batch
+    X = [x.to(device) for x in X]
+    Y = [{k:v.to(device) for k,v in t.items()} for t in Y]
+
+    model.train()
+
+
+    optimizer.zero_grad()
+    losses = model(X,Y)
+    loss = sum(los for los in losses.values())
+
+    loss.backward()
+    optimizer.step()
+
+    return loss
+
+
 
 
     
 
-
-
-
-
-
-
-# model
-# model = faster_rccn()
-# losses = model(X,y)
-# loss 
-# # history = model.
-# model.compile()
-# model.forward()
-# model.train(True)
-
-# ic("Done")
-
-# print(train_set[90])
-# 

@@ -14,6 +14,17 @@ annotation_root = "../data/annotations"
 
 def xml_to_dict(file):
 
+
+    """
+    convert annotations xml file to dictionary
+
+    ------------------------------------------
+
+    file:
+        file to read and convert
+
+    """
+
     file_path = annotation_root + "/" + file
     tree = ET.parse(file_path)
     root = tree.getroot()
@@ -41,6 +52,15 @@ class CatDogDataset(Dataset):
 
     def __init__(self,root,transformes=None,label_dict = {"dog":1,"cat":2}):
 
+        """
+        root:
+            the main directory where both images and annotations are stored
+        transormes:
+            image transformation
+        label_dict:
+            label for each dict
+        """
+
         self.root = root
         self.transformes = transformes 
         self.files = [file.split(".")[0] for file in os.listdir(self.root+"/images")]
@@ -49,6 +69,10 @@ class CatDogDataset(Dataset):
 
 
     def __getitem__(self, index):
+
+        """
+
+        """
 
         file_name = self.files[index]
         # file_name = file.split(".")[0]
@@ -73,22 +97,15 @@ class CatDogDataset(Dataset):
         xmax = ann["xmax"] * x_ratio
         ymax = ann["ymax"] * y_ratio
 
-        target = {"boxes":torch.as_tensor([
+        target = {"boxes":torch.as_tensor([[
                     xmin,
                     ymin,
                     xmax,
                     ymax
-                  ])}
+                  ]])}
         
         target['labels'] = torch.as_tensor([self.label_dict[ann['label']]])
-        target['image_id'] = index
-
-        # target = torch.as_tensor([[
-        #           ann['xmin'],
-        #           ann["ymin"],
-        #           ann["xmax"],
-        #           ann["ymax"]]]),torch.as_tensor([self.label_dict[ann['label']]])
-        
+        # target['image_id'] = index
 
 
 
