@@ -42,23 +42,16 @@ def train_model(model,n_of_iterations=10):
             X = X
             Y = [Y]
 
-            # print(Y)
-            # break
-
-            # ic(X[0].shape)
-
-            # break
-
-
-            print(X)
+            # print(X)
             print(Y)
 
-            # for k,v in Y.items():
-            #     print(k,v)
-            # quit()
+            # print(Y[0]['boxes'].size())
 
-            loss = model(X,Y)
-            quit()
+
+            output = model(X,Y)
+            print(output)
+            break
+        break
             # print(loss)
 
 
