@@ -56,7 +56,7 @@ def train(model,batch,optimizer,device):
 
     optimizer.zero_grad()
     losses = model(X,Y)
-    loss = sum(los for los in losses.values())
+    loss = sum(los for los in losses.values())/len(X)
 
     loss.backward()
     optimizer.step()
