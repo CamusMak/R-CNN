@@ -9,9 +9,7 @@ sys.path.append("../utils")
 
 
 
-
-
-
+@torch.no_grad
 def validate(model,batch,optimizer,device):
 
     """
@@ -49,10 +47,11 @@ def validate(model,batch,optimizer,device):
     X = [x.to(device) for x in X]
     Y = [{k:v.to(device) for k,v in t.items()} for t in Y]
 
-    model.train()
+    model.to(device)
+
+    model.eval()
 
 
-    optimizer.zero_grad()
     losses = model(X,Y)
     loss = sum(los for los in losses.values())
 

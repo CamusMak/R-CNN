@@ -12,7 +12,7 @@ from PIL import Image
 
 annotation_root = "../data/annotations"
 
-def xml_to_dict(file):
+def xml_to_dict(file,annotation_root=annotation_root):
 
 
     """

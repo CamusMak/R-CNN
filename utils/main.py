@@ -6,6 +6,8 @@ sys.path.append("../utils")
 
 from dataset import CatDogDataset
 from model import faster_rccn
+
+from split_roots import split
 from helper_functions import collate_fn
 from train_rcnn import train_model
 
@@ -25,14 +27,15 @@ validataion_set = CatDogDataset(VALIDATION_ROOT)
 train_dataloader = DataLoader(train_set,batch_size=BATCH_SIZE,collate_fn=collate_fn)
 validation_dataloader = DataLoader(validataion_set,batch_size=BATCH_SIZE,collate_fn=collate_fn)
 
+
+
 ## split files into several roots
 # split("../data/images",source_annoation_root='../data/annotations',train_root=TRAIN_ROOT,validation_root=VALIDATION_ROOT,test_root=TEST_ROOT)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 model = faster_rccn()
-if torch.cuda.is_available():
-    model.cuda()
+
 
 optimizer = torch.optim.SGD(lr=LR,params=[param for param in model.parameters() if param.requires_grad])
 
