@@ -49,6 +49,8 @@ def validate(model,batch,optimizer,device):
     X = [x.to(device) for x in X]
     Y = [{k:v.to(device) for k,v in t.items()} for t in Y]
 
+    model.to(device)
+
     model.train()
 
 
