@@ -1,0 +1,16 @@
+# Compiled Python bytecode
+*.py[cod]
+
+# Log files
+*.log
+
+# JetBrains IDE
+.idea/
+
+# project folders
+logs/
+venv/
+####checkpoints tto be added in code but not pushed
+checkpoints/
+
+# other files
