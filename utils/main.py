@@ -16,7 +16,7 @@ VALIDATION_ROOT = '../DATA/validation'
 TEST_ROOT = '../DATA/test'
 
 ## split files into several roots
-split("../data/images",source_annoation_root='../data/annotations',train_root=TRAIN_ROOT,validation_root=VALIDATION_ROOT,test_root=TEST_ROOT)
+# split("../data/images",source_annoation_root='../data/annotations',train_root=TRAIN_ROOT,validation_root=VALIDATION_ROOT,test_root=TEST_ROOT)
 
 
 

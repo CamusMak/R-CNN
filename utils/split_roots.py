@@ -4,6 +4,8 @@ import shutil
 import random
 
 
+# change path + to os.path.join()
+
 def split(source_image_root,source_annoation_root,train_root,validation_root,
           test_root,random_seed=None,train_size=0.7,validation_size=0.2,test_size=0.1):
 
